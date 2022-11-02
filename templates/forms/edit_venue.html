@@ -1,0 +1,93 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Edit Venue{% endblock %}
+{% block content %}
+  <div class="form-wrapper">
+    <form class="form" method="post" action="/venues/{{venue.id}}/edit">
+      <h3 class="form-heading">Edit venue <em>{{ venue.name }}</em> <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+      <div class="form-group">
+        <label for="name" id="name">Name</label>
+        {{ form.name(class_ = 'form-control', autofocus = true, value = venue.name) }}
+      </div>
+      <div class="form-group">
+          <label>City & State</label>
+          <div class="form-inline">
+            <div class="form-group" id="city">
+              {{ form.city(class_ = 'form-control', placeholder='City', autofocus = true, value = venue.city) }}
+            </div>
+            <div class="form-group" id="state">
+              {{ form.state(class_ = 'form-control', placeholder='State', autofocus = true, value = venue.state) }}
+            </div>
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="address" id="address">Address</label>
+        {{ form.address(class_ = 'form-control', autofocus = true, value = venue.address) }}
+      </div>
+      <div class="form-group">
+          <label for="phone" id="phone">Phone</label>
+          {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true, value = venue.phone) }}
+        </div>
+      <div class="form-group">
+        <label for="genres" id="genres">Genres</label>
+        <small>Ctrl+Click to select multiple</small>
+        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', autofocus = true, value = venue.genres) }}
+      </div>
+      <div class="form-group">
+          <label for="facebook_link" id="facebook_link">Facebook Link</label>
+          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', autofocus = true, value = venue.facebook_link) }}
+       </div>
+      
+       <div class="form-group">
+          <label for="image_link" id="image_link">Image Link</label>
+          {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true, value = venue.image_link) }}
+       </div>
+
+       <div class="form-group">
+              <label for="website_link" id="website_link">Website Link</label>
+              {{ form.website_link(class_ = 'form-control', placeholder='http://', autofocus = true, value = venue.website_link) }}
+        </div>
+
+        <div class="form-group">
+             <label for="seeking_talent" id="seeking_talent">Looking for Talent</label>
+             {{ form.seeking_talent(placeholder='Venue', autofocus = true, value = venue.looking_for_talent) }}
+        </div>
+
+        <div class="form-group">
+            <label for="seeking_description" id="seeking_description">Seeking Description</label>
+            {{ form.seeking_description(class_ = 'form-control', autofocus = true, value = venue.seeking_description) }}
+          </div>
+      
+      <input type="submit" value="Edit Venue" class="btn btn-primary btn-lg btn-block" id="edit-venue" data-id="{{ venue.id }}">
+    </form>
+  </div>
+
+  <script>
+    const edit_venue = document.getElementById('edit-venue')
+    edit_venue.addEventListener("click", function clickFunction(e) {
+      venue_id = e.target.dataset['id']
+      fetch('/venues/' + venue_id + '/edit', {
+        method: 'POST',
+        body: JSON.stringify({
+          'venue_id': venue_id,
+          'name': document.getElementById('name').value,
+          'city': document.getElementById('city').value,
+          'state': document.getElementById('state').value,
+          'address': document.getElementById('address').value,
+          'phone': document.getElementById('phone').value,
+          'genres': document.getElementById('genres').value,
+          'facebook_link': document.getElementById('facebook_link').value,
+          'image_link': document.getElementById('image_link').value,
+          'website_link': document.getElementById('website_link').value,
+          'seeking_talent': document.getElementById('seeking_talent').value,
+          'seeking_description': document.getElementById('seeking_description').value
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    })
+  </script>
+
+
+
+{% endblock %}
